@@ -403,16 +403,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Week6OnCreate() {
-        // Initialise RecyclerView variable with corresponding element ID and set layout manager
-        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
-        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
-        recyclerView.setLayoutManager(layoutManager);
+
 
         // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
         database = new ArrayList<>();
         recyclerAdapter = new RecyclerAdapter();
         recyclerAdapter.setData(database);
-        recyclerView.setAdapter(recyclerAdapter);
     }
 
     public void Week7OnCreate() {
