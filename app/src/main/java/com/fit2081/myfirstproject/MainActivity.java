@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Item> database; // ArrayList to store books
     RecyclerView recyclerView; // RecyclerView to display books
     RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
-    RecyclerAdapter recyclerAdapter; // Adapter to display items in RecyclerView
+    Adapter adapter; // Adapter to display items in RecyclerView
     DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
     NavigationView navigationView; // Navigation view to display navigation drawer
     Toolbar toolbar; // Toolbar to display app bar
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Clear all items in the list view
             database.clear();
-            recyclerAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         } else if (id == R.id.options_menu_load_shared_preferences_saved_values) {
 
             // Call loadSharedPreferences method to load saved EditText values
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add item to database and notify adapter of data change
         database.add(item);
-        recyclerAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
         bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
@@ -328,13 +328,13 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.navigation_menu_add_book) { // If the item selected is the add book item, call onAddBookButtonClick method and notify adapter of data change
                 onAddBookButtonClick(null);
-                recyclerAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             } else if (id == R.id.navigation_menu_remove_last_book) { // If the item selected is the remove last book item, remove the last item in the database and notify adapter of data change
                 database.remove(database.size() - 1);
-                recyclerAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             } else if (id == R.id.navigation_menu_remove_all_books) { // If the item selected is the remove all books item, clear the database and notify adapter of data change
                 database.clear();
-                recyclerAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
             drawerLayout.closeDrawers(); // Close the drawer
             return true;
@@ -410,10 +410,10 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
         recyclerView.setLayoutManager(layoutManager);
 
-        // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
+        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
         database = new ArrayList<>();
-        recyclerAdapter = new RecyclerAdapter();
-        recyclerAdapter.setData(database);
-        recyclerView.setAdapter(recyclerAdapter);
+        adapter = new Adapter();
+        adapter.setData(database);
+        recyclerView.setAdapter(adapter);
     }
 }
