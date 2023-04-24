@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
         // Add item to database and notify adapter of data change
-        BookListFragment bookListFragment = (BookListFragment) getSupportFragmentManager().findFragmentById(R.id.frameLayout_id);
-        bookListFragment.addBook(item);
+        database.add(item);
+        recyclerAdapter.notifyDataSetChanged();
 
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
         bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
