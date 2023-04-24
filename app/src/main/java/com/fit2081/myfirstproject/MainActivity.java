@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-        Week6OnCreate();
+
         Week7OnCreate();
     }
 
@@ -412,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Week7OnCreate() {
+        database = new ArrayList<>();
         // Initialise ViewModelProvider that will be used to access database across multiple fragments
         bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
 
