@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_menu_add_book"
+        android:title="@string/navigation_menu_add_book" />
+    <item
+        android:id="@+id/navigation_menu_remove_last_book"
+        android:title="@string/navigation_menu_remove_last_book" />
+    <item
+        android:id="@+id/navigation_menu_remove_all_books"
+        android:title="@string/navigation_menu_remove_all_books" />
+
+</menu>

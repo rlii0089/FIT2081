@@ -15,4 +15,26 @@
     <string name="load_last_book_text">Load Last Book</string>
     <string name="double_price_button_text">Double Price</string>
     <string name="add_book_button_text">Add Book</string>
+
+    <!-- Menu Texts -->
+    <string name="clear_all">Clear All</string>
+    <string name="load_saved_values">Load Saved Values</string>
+
+    <!-- Navigation Drawer Texts -->
+    <string name="open_navigation_drawer">Open Navigation Drawer</string>
+    <string name="close_navigation_drawer">Close Navigation Drawer</string>
+
+    <!-- Navigation Drawer Menu Texts -->
+    <string name="navigation_menu_add_book">Add Book</string>
+    <string name="navigation_menu_remove_last_book">Remove Last Book</string>
+    <string name="navigation_menu_remove_all_books">Remove All Books</string>
+
+    <!-- Card Prompt Texts -->
+    <string name="book_id_prompt">Book ID:</string>
+    <string name="book_isbn_prompt">ISBN:</string>
+    <string name="book_description_prompt">Description:</string>
+    <string name="book_title_prompt">Title:</string>
+    <string name="book_author_prompt">Author:</string>
+    <string name="book_price_prompt">Price:</string>
+
 </resources>

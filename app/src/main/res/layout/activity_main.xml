@@ -11,42 +11,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_guideline_right_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.8" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline_top_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.075" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline_bottom_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.9767442" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_guideline_left_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.025" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_guideline_right_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.975" />
 
     <EditText
         android:id="@+id/bookID_id"
@@ -125,45 +125,43 @@
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
         app:layout_constraintTop_toBottomOf="@+id/bookPrice_id" />
 
-    <!--
-            Button text has been made a string resource (@string), so it has been moved to strings.xml.
-            This makes it easier to maintain as it can be edited in one place.
-        -->
-
     <Button
         android:id="@+id/doublePriceButton"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="72dp"
         android:onClick="onDoublePriceButtonClick"
         android:text="@string/double_price_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/clearButton"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button" />
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
+        app:layout_constraintStart_toEndOf="@+id/loadLastBookButton"
+        app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
     <Button
         android:id="@+id/clearButton"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="72dp"
         android:onClick="onClearButtonClick"
         android:text="@string/clear_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_bottom_button"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button" />
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
+        app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
     <Button
         android:id="@+id/loadLastBookButton"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="72dp"
         android:onClick="onLoadLastBookButtonClick"
         android:text="@string/load_last_book_text"
-        app:layout_constraintBottom_toTopOf="@+id/addBookButton"
-        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button" />
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
+        app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
-    <Button
-        android:id="@+id/addBookButton"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:onClick="onAddBookButtonClick"
-        android:text="@string/add_book_button_text"
+    <FrameLayout
+        android:id="@+id/frameLayout_id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_bottom_button"
-        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button" />
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
+        app:layout_constraintTop_toBottomOf="@+id/doublePriceButton">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
