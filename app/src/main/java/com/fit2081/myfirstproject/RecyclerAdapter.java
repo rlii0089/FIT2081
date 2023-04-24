@@ -6,12 +6,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     ArrayList<Item> database; // The ArrayList of Items that will be displayed in the RecyclerView
+
+    public RecyclerAdapter(FragmentActivity fragmentActivity, ArrayList<Item> database) {
+        this.database = database;
+    }
 
     /**
      * This method creates a new ViewHolder object whenever the RecyclerView needs a new one.

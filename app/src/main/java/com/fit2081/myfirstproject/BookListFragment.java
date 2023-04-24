@@ -27,7 +27,7 @@ public class BookListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             bookList = new ArrayList<Item>();
-            recyclerAdapter = new RecyclerAdapter();
+            recyclerAdapter = new RecyclerAdapter(getActivity(), bookList);
         }
     }
 

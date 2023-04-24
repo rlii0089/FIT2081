@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Week6OnCreate() {
-
+        recyclerAdapter = new RecyclerAdapter(this, database); // Instantiate RecyclerAdapter with context and database
 
         // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
         database = new ArrayList<>();
