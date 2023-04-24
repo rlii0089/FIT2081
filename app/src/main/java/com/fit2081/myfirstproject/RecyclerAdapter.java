@@ -8,10 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fit2081.myfirstproject.provider.Book;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     ArrayList<Item> database; // The ArrayList of Items that will be displayed in the RecyclerView
+    private List<Book> books;
+
+    public RecyclerAdapter() {
+        books = new ArrayList<>();
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+        notifyDataSetChanged();
+    }
 
     /**
      * This method creates a new ViewHolder object whenever the RecyclerView needs a new one.

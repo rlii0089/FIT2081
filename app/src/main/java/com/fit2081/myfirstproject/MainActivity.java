@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
         Week6OnCreate();
 
         bookViewModel = new ViewModelProvider(this).get(BookViewModel.class); // Initialise ViewModelProvider that will be used to access database across multiple fragments
+
+        RecyclerView recyclerView = findViewById(R.id.listOfBooksRecyclerView);
+        RecyclerAdapter recyclerAdapter = new RecyclerAdapter();
+        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        bookViewModel.getListOfBooks().observe(this, new Observer<List<Book>>() {
+            @Override
+            public void onChanged(List<Book> books) {
+                // Update the adapter with the new list of books
+                recyclerAdapter.setBooks(books);
+            }
+        });
+
 
         // Observe changes in the list of books in the database
         bookViewModel.getListOfBooks().observe(this, (books -> {
