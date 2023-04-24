@@ -66,23 +66,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout); // Set content view to drawer layout as it contains the navigation drawer and list view
 
-
-        // Initialise FloatingActionButton variable with corresponding element ID
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            // Set on click listener to add book button
-            @Override
-            public void onClick(View view) {
-                onAddBookButtonClick(view); // Call onAddBookButtonClick method
-            }
-        });
-
         Week2OnCreate();
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
         Week6OnCreate();
-        Week7OnCreate();
     }
 
     /**
@@ -224,9 +212,6 @@ public class MainActivity extends AppCompatActivity {
 
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
         bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_id, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
-
 
         saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
         String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
@@ -398,19 +383,34 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
         navigationView.setNavigationItemSelectedListener(new NavigationHandler());// Set navigation view item selected listener to the custom class NavigationHandler
 
+        // Initialise FloatingActionButton variable with corresponding element ID
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            // Set on click listener to add book button
+            @Override
+            public void onClick(View view) {
+                onAddBookButtonClick(view); // Call onAddBookButtonClick method
+            }
+        });
     }
 
     public void Week6OnCreate() {
-        recyclerAdapter = new RecyclerAdapter(this, database); // Instantiate RecyclerAdapter with context and database
+        // Initialise RecyclerView variable with corresponding element ID and set layout manager
+        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
+        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
+        recyclerView.setLayoutManager(layoutManager);
 
         // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
         database = new ArrayList<>();
+        recyclerAdapter = new RecyclerAdapter();
+        recyclerAdapter.setData(database);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     public void Week7OnCreate() {
-
         // Initialise ViewModelProvider that will be used to access database across multiple fragments
         bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
 
