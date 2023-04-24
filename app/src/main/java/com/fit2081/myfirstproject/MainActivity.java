@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +32,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<Item> database; // ArrayList to store books
-    RecyclerView recyclerView; // RecyclerView to display books
-    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
-    Adapter adapter; // Adapter to display items in RecyclerView
+//    RecyclerView recyclerView; // RecyclerView to display books
+//    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
+//    Adapter adapter; // Adapter to display items in RecyclerView
     DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
     NavigationView navigationView; // Navigation view to display navigation drawer
     Toolbar toolbar; // Toolbar to display app bar
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-        Week6OnCreate();
+//        Week6OnCreate();
 
         bookViewModel = new ViewModelProvider(this).get(BookViewModel.class); // Initialise ViewModelProvider that will be used to access database across multiple fragments
 
@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         bookViewModel.getListOfBooks().observe(this, (books -> {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment());
+        transaction.commit();
     }
 
     /**
@@ -103,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.options_menu_clear_all_items) {
 
             // Clear all items in the list view
-            database.clear();
-            adapter.notifyDataSetChanged();
+            BookListFragment bookListFragment = new BookListFragment();
+            bookListFragment.clear();
         } else if (id == R.id.options_menu_load_shared_preferences_saved_values) {
 
             // Call loadSharedPreferences method to load saved EditText values
@@ -214,8 +218,8 @@ public class MainActivity extends AppCompatActivity {
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
         // Add item to database and notify adapter of data change
-        database.add(item);
-        adapter.notifyDataSetChanged();
+        BookListFragment bookListFragment = new BookListFragment();
+        bookListFragment.addBook(item);
 
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
         bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
@@ -328,13 +332,12 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.navigation_menu_add_book) { // If the item selected is the add book item, call onAddBookButtonClick method and notify adapter of data change
                 onAddBookButtonClick(null);
-                adapter.notifyDataSetChanged();
             } else if (id == R.id.navigation_menu_remove_last_book) { // If the item selected is the remove last book item, remove the last item in the database and notify adapter of data change
-                database.remove(database.size() - 1);
-                adapter.notifyDataSetChanged();
+                BookListFragment bookListFragment = new BookListFragment();
+                bookListFragment.removeBook(bookListFragment.getLastBook());
             } else if (id == R.id.navigation_menu_remove_all_books) { // If the item selected is the remove all books item, clear the database and notify adapter of data change
-                database.clear();
-                adapter.notifyDataSetChanged();
+                BookListFragment bookListFragment = new BookListFragment();
+                bookListFragment.clear();
             }
             drawerLayout.closeDrawers(); // Close the drawer
             return true;
@@ -404,16 +407,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void Week6OnCreate() {
-        // Initialise RecyclerView variable with corresponding element ID and set layout manager
-        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
-        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
-        recyclerView.setLayoutManager(layoutManager);
-
-        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
-        database = new ArrayList<>();
-        adapter = new Adapter();
-        adapter.setData(database);
-        recyclerView.setAdapter(adapter);
-    }
+//    public void Week6OnCreate() {
+//        // Initialise RecyclerView variable with corresponding element ID and set layout manager
+//        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
+//        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
+//        database = new ArrayList<>();
+//        adapter = new Adapter();
+//        adapter.setData(database);
+//        recyclerView.setAdapter(adapter);
+//    }
 }
