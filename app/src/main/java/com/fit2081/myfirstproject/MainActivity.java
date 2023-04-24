@@ -71,7 +71,13 @@ public class MainActivity extends AppCompatActivity {
         Week4OnCreate();
         Week5OnCreate();
         Week6OnCreate();
-        Week7OnCreate();
+
+        bookViewModel = new ViewModelProvider(this).get(BookViewModel.class); // Initialise ViewModelProvider that will be used to access database across multiple fragments
+
+        // Observe changes in the list of books in the database
+        bookViewModel.getListOfBooks().observe(this, (books -> {
+            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
+        }));
     }
 
     /**
@@ -409,15 +415,5 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter();
         recyclerAdapter.setData(database);
         recyclerView.setAdapter(recyclerAdapter);
-    }
-
-    public void Week7OnCreate() {
-        // Initialise ViewModelProvider that will be used to access database across multiple fragments
-        bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
-
-        // Observe changes in the list of books in the database
-        bookViewModel.getListOfBooks().observe(this, (books -> {
-            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
-        }));
     }
 }
