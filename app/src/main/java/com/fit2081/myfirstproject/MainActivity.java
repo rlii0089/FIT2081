@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Week4OnCreate();
         Week5OnCreate();
         Week6OnCreate();
+        Week7OnCreate();
     }
 
     /**
