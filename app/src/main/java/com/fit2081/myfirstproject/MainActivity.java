@@ -32,7 +32,6 @@ import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Item> database; // ArrayList to store books
-    RecyclerView recyclerView; // RecyclerView to display books
     RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
     RecyclerAdapter recyclerAdapter; // Adapter to display items in RecyclerView
     DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
@@ -398,18 +397,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void Week6OnCreate() {
-        // Initialise RecyclerView variable with corresponding element ID and set layout manager
-        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
-        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
-        recyclerView.setLayoutManager(layoutManager);
-
-        // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
-        database = new ArrayList<>();
-        recyclerAdapter = new RecyclerAdapter();
-        recyclerAdapter.setData(database);
-        recyclerView.setAdapter(recyclerAdapter);
-    }
+//    public void Week6OnCreate() {
+//        // Initialise RecyclerView variable with corresponding element ID and set layout manager
+//        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
+//        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        // Initialise ArrayList and RecyclerAdapter variables and set data to ArrayList and adapter
+//        database = new ArrayList<>();
+//        recyclerAdapter = new RecyclerAdapter();
+//        recyclerAdapter.setData(database);
+//        recyclerView.setAdapter(recyclerAdapter);
+//    }
 
     public void Week7OnCreate() {
         database = new ArrayList<>();

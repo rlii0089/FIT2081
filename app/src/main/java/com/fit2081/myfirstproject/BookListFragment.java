@@ -11,8 +11,9 @@ import android.view.ViewGroup;
 
 public class BookListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private RecyclerAdapter adapter;
+    private RecyclerView recyclerView; // RecyclerView to display books
+
+    private RecyclerAdapter recyclerAdapter; // Adapter to display items in RecyclerView
 
 
     public BookListFragment() {
@@ -28,8 +29,8 @@ public class BookListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.listOfBooksRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new RecyclerAdapter();
-        recyclerView.setAdapter(adapter);
+        recyclerAdapter = new RecyclerAdapter();
+        recyclerView.setAdapter(recyclerAdapter);
 
         return view;
     }
