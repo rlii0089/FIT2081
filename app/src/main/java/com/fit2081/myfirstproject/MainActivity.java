@@ -32,9 +32,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
-//    RecyclerView recyclerView; // RecyclerView to display books
-//    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
-//    Adapter adapter; // Adapter to display items in RecyclerView
+    ArrayList<Item> database; // ArrayList to store books
+    RecyclerView recyclerView; // RecyclerView to display books
+    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
+    Adapter adapter; // Adapter to display items in RecyclerView
     DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
     NavigationView navigationView; // Navigation view to display navigation drawer
     Toolbar toolbar; // Toolbar to display app bar
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-//        Week6OnCreate();
+        Week6OnCreate();
 
         bookViewModel = new ViewModelProvider(this).get(BookViewModel.class); // Initialise ViewModelProvider that will be used to access database across multiple fragments
 
@@ -79,9 +80,33 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment());
-        transaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment())
+                .commit();
+    }
+
+    /**
+     * Method to handle add book button click
+     * @param view The view that was clicked
+     */
+    public void onAddBookButtonClick(View view){ // Button has been replaced by floating action button
+        // Save values as variables and create new item
+        String theBookId = bookIdEt.getText().toString();
+        String theBookTitle = bookTitleEt.getText().toString();
+        String theBookIsbn = bookIsbnEt.getText().toString();
+        String theBookAuthor = bookAuthorEt.getText().toString();
+        String theBookDescription = bookDescriptionEt.getText().toString();
+        String theBookPrice = bookPriceEt.getText().toString(); // Treating as String as no arithmetic operations are performed
+        Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
+
+        database.add(item);
+        adapter.notifyDataSetChanged();
+
+        saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
+        String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
+        if (database.contains(item))
+            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show(); // Create toast with defined variables from above
     }
 
     /**
@@ -107,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.options_menu_clear_all_items) {
 
             // Clear all items in the list view
-            BookListFragment bookListFragment = new BookListFragment();
-            bookListFragment.clear();
+            database.clear();
+            adapter.notifyDataSetChanged();
         } else if (id == R.id.options_menu_load_shared_preferences_saved_values) {
 
             // Call loadSharedPreferences method to load saved EditText values
@@ -118,34 +143,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to handle state data across activity instances in the same user session
-     * @param outState The bundle to save the state to
+     * Method to handle clear button click
+     * @param view The view that was clicked
      */
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // Save values from EditTexts to key-value pairs
-        outState.putString(BOOK_TITLE_KEY, bookTitleEt.getText().toString());
-        outState.putInt(BOOK_ISBN_KEY, Integer.parseInt(bookIsbnEt.getText().toString()));
-
-        // Extra task in week 3 lab
-        outState.putInt(BOOK_COPIES_SOLD_KEY, Integer.parseInt(bookCopiesSoldEt.getText().toString()));
+    public void onClearButtonClick(View view){
+        // Clear fields, alternate way would be to use setText
+        // e.g. BookTitleEt.setText("");
+        bookIdEt.getText().clear();
+        bookTitleEt.getText().clear();
+        bookIsbnEt.getText().clear();
+        bookAuthorEt.getText().clear();
+        bookDescriptionEt.getText().clear();
+        bookPriceEt.getText().clear();
+        bookCopiesSoldEt.getText().clear();
     }
 
     /**
-     * Method to handle restoring state data across activity instances in the same user session
-     * @param savedInstanceState The bundle to restore the state from
+     * Method to handle load last book button click
+     * @param view The view that was clicked
      */
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        // Super keyword not called as we only want to restore selected states
-        // Retrieve the values from their key-value pairs and set texts to the EditText variables using the values retrieved
-        bookTitleEt.setText(savedInstanceState.getString(BOOK_TITLE_KEY));
-        bookIsbnEt.setText(String.valueOf(savedInstanceState.getInt(BOOK_ISBN_KEY)));
+    public void onLoadLastBookButtonClick(View view) {
+        // call loadSharedPreferences method to load saved EditText values
+        loadSharedPreferences();
+    }
 
-        // Extra task in week 3 lab
-        bookCopiesSoldEt.setText(String.valueOf(savedInstanceState.getInt(BOOK_COPIES_SOLD_KEY)));
+    // Extra task in week 2 lab
+    /**
+     * Method to handle double price button click
+     * @param view The view that was clicked
+     */
+    public void onDoublePriceButtonClick(View view){
+        // Assign current price in EditText to a variable whilst converting it into an integer
+        int currentBookPriceInteger = Integer.parseInt(bookPriceEt.getText().toString());
+
+        // Double the price in the variable and reassign it
+        currentBookPriceInteger *= 2;
+
+        // Convert integer to a string and save in a variable
+        String currentBookPriceString = Integer.toString(currentBookPriceInteger);
+
+        // Set the text in the EditText as the variable value above, no need to clear as it replaces the text
+        bookPriceEt.setText(currentBookPriceString);
     }
 
     /**
@@ -204,73 +242,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to handle add book button click
-     * @param view The view that was clicked
+     * Method to handle state data across activity instances in the same user session
+     * @param outState The bundle to save the state to
      */
-    public void onAddBookButtonClick(View view){ // Button has been replaced by floating action button
-        // Save values as variables and create new item
-        String theBookId = bookIdEt.getText().toString();
-        String theBookTitle = bookTitleEt.getText().toString();
-        String theBookIsbn = bookIsbnEt.getText().toString();
-        String theBookAuthor = bookAuthorEt.getText().toString();
-        String theBookDescription = bookDescriptionEt.getText().toString();
-        String theBookPrice = bookPriceEt.getText().toString(); // Treating as String as no arithmetic operations are performed
-        Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        // Add item to database and notify adapter of data change
-        BookListFragment bookListFragment = new BookListFragment();
-        bookListFragment.addBook(item);
+        // Save values from EditTexts to key-value pairs
+        outState.putString(BOOK_TITLE_KEY, bookTitleEt.getText().toString());
+        outState.putInt(BOOK_ISBN_KEY, Integer.parseInt(bookIsbnEt.getText().toString()));
 
-        Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
-        bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
-
-        saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
-        String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
-        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show(); // Create toast with defined variables from above
+        // Extra task in week 3 lab
+        outState.putInt(BOOK_COPIES_SOLD_KEY, Integer.parseInt(bookCopiesSoldEt.getText().toString()));
     }
 
     /**
-     * Method to handle clear button click
-     * @param view The view that was clicked
+     * Method to handle restoring state data across activity instances in the same user session
+     * @param savedInstanceState The bundle to restore the state from
      */
-    public void onClearButtonClick(View view){
-        // Clear fields, alternate way would be to use setText
-        // e.g. BookTitleEt.setText("");
-        bookIdEt.getText().clear();
-        bookTitleEt.getText().clear();
-        bookIsbnEt.getText().clear();
-        bookAuthorEt.getText().clear();
-        bookDescriptionEt.getText().clear();
-        bookPriceEt.getText().clear();
-        bookCopiesSoldEt.getText().clear();
-    }
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        // Super keyword not called as we only want to restore selected states
+        // Retrieve the values from their key-value pairs and set texts to the EditText variables using the values retrieved
+        bookTitleEt.setText(savedInstanceState.getString(BOOK_TITLE_KEY));
+        bookIsbnEt.setText(String.valueOf(savedInstanceState.getInt(BOOK_ISBN_KEY)));
 
-    /**
-     * Method to handle load last book button click
-     * @param view The view that was clicked
-     */
-    public void onLoadLastBookButtonClick(View view) {
-        // call loadSharedPreferences method to load saved EditText values
-        loadSharedPreferences();
-    }
-
-    // Extra task in week 2 lab
-    /**
-     * Method to handle double price button click
-     * @param view The view that was clicked
-     */
-    public void onDoublePriceButtonClick(View view){
-        // Assign current price in EditText to a variable whilst converting it into an integer
-        int currentBookPriceInteger = Integer.parseInt(bookPriceEt.getText().toString());
-
-        // Double the price in the variable and reassign it
-        currentBookPriceInteger *= 2;
-
-        // Convert integer to a string and save in a variable
-        String currentBookPriceString = Integer.toString(currentBookPriceInteger);
-
-        // Set the text in the EditText as the variable value above, no need to clear as it replaces the text
-        bookPriceEt.setText(currentBookPriceString);
+        // Extra task in week 3 lab
+        bookCopiesSoldEt.setText(String.valueOf(savedInstanceState.getInt(BOOK_COPIES_SOLD_KEY)));
     }
 
     class MyBroadcastReceiver extends BroadcastReceiver {
@@ -332,12 +331,13 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.navigation_menu_add_book) { // If the item selected is the add book item, call onAddBookButtonClick method and notify adapter of data change
                 onAddBookButtonClick(null);
+                adapter.notifyDataSetChanged();
             } else if (id == R.id.navigation_menu_remove_last_book) { // If the item selected is the remove last book item, remove the last item in the database and notify adapter of data change
-                BookListFragment bookListFragment = new BookListFragment();
-                bookListFragment.removeBook(bookListFragment.getLastBook());
+                database.remove(database.size() - 1);
+                adapter.notifyDataSetChanged();
             } else if (id == R.id.navigation_menu_remove_all_books) { // If the item selected is the remove all books item, clear the database and notify adapter of data change
-                BookListFragment bookListFragment = new BookListFragment();
-                bookListFragment.clear();
+                database.clear();
+                adapter.notifyDataSetChanged();
             }
             drawerLayout.closeDrawers(); // Close the drawer
             return true;
@@ -407,16 +407,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    public void Week6OnCreate() {
-//        // Initialise RecyclerView variable with corresponding element ID and set layout manager
-//        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
-//        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
-//        database = new ArrayList<>();
-//        adapter = new Adapter();
-//        adapter.setData(database);
-//        recyclerView.setAdapter(adapter);
-//    }
+    public void Week6OnCreate() {
+        // Initialise RecyclerView variable with corresponding element ID and set layout manager
+        recyclerView = findViewById(R.id.listOfBooksRecyclerView);
+        layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
+        database = new ArrayList<>();
+        adapter = new Adapter();
+        adapter.setData(database);
+        recyclerView.setAdapter(adapter);
+    }
 }
