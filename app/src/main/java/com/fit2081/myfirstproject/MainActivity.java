@@ -94,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
         saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
         String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
-        if (database.contains(item))
-            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show(); // Create toast with defined variables from above
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show(); // Create toast with defined variables from above
+        bookViewModel.getListOfBooks().observe(this, (books -> {
+            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
+        }));
     }
 
     /**
