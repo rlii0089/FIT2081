@@ -13,14 +13,10 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 public class BookListFragment extends Fragment {
-    private ArrayList<Item> database = new ArrayList<>();
+    private ArrayList<Item> database;
     private RecyclerView recyclerView;
-    private Adapter adapter = new Adapter();
+    private Adapter adapter;
     private LinearLayoutManager layoutManager;
-
-    public BookListFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,15 +29,11 @@ public class BookListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
+        database = new ArrayList<>();
+        adapter = new Adapter();
         adapter.setData(database);
         recyclerView.setAdapter(adapter);
 
         return view;
-    }
-
-    public void addItem(Item item) {
-        // Add item to ArrayList and notify adapter of change
-        database.add(item);
-        adapter.notifyDataSetChanged();
     }
 }

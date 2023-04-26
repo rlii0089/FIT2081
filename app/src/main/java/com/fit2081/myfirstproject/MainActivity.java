@@ -32,15 +32,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<Item> database; // ArrayList to store books
-    RecyclerView recyclerView; // RecyclerView to display books
-    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
-    Adapter adapter; // Adapter to display items in RecyclerView
-    DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
-    NavigationView navigationView; // Navigation view to display navigation drawer
-    Toolbar toolbar; // Toolbar to display app bar
-    private BookViewModel bookViewModel; // View model to access database
-
     EditText bookIdEt
             , bookTitleEt
             , bookIsbnEt
@@ -57,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
             , BOOK_DESCRIPTION_KEY = "BOOK_DESCRIPTION"
             , BOOK_PRICE_KEY = "BOOK_PRICE"
             , BOOK_COPIES_SOLD_KEY = "BOOK_COPIES_SOLD"; // Extra task in week 3 lab
+    ArrayList<Item> database; // ArrayList to store books
+    RecyclerView recyclerView; // RecyclerView to display books
+    RecyclerView.LayoutManager layoutManager; // Layout manager to manage items in RecyclerView
+    Adapter adapter; // Adapter to display items in RecyclerView
+    DrawerLayout drawerLayout; // Drawer layout to display navigation drawer
+    NavigationView navigationView; // Navigation view to display navigation drawer
+    Toolbar toolbar; // Toolbar to display app bar
+    private BookViewModel bookViewModel; // View model to access database
 
     /**
      * Method to handle create activity
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-//        Week6OnCreate();
+        Week6OnCreate();
         Week7OnCreate();
     }
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to handle add book button click
      * @param view The view that was clicked
      */
-    public void onAddBookButtonClick(View view){ // Button has been replaced by floating action button
+    public void onAddBookButtonClick(View view) { // Button has been replaced by floating action button
         // Save values as variables and create new item
         String theBookId = bookIdEt.getText().toString();
         String theBookTitle = bookTitleEt.getText().toString();
@@ -89,15 +88,16 @@ public class MainActivity extends AppCompatActivity {
         String theBookPrice = bookPriceEt.getText().toString(); // Treating as String as no arithmetic operations are performed
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
-        BookListFragment bookListFragment = new BookListFragment();
-        bookListFragment.addItem(item);
+        database.add(item);
+        adapter.notifyDataSetChanged();
+
+        Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
+        bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
 
         saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
-        String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
+
+        String toastMessage = "Added: " + theBookTitle + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show(); // Create toast with defined variables from above
-        bookViewModel.getListOfBooks().observe(this, (books -> {
-            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
-        }));
     }
 
     /**
@@ -329,6 +329,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.navigation_menu_remove_all_books) { // If the item selected is the remove all books item, clear the database and notify adapter of data change
                 database.clear();
                 adapter.notifyDataSetChanged();
+
+                bookViewModel.deleteAllBooksViewModel(); // Extra task in week 6 lab
             }
             drawerLayout.closeDrawers(); // Close the drawer
             return true;
@@ -400,7 +402,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void Week6OnCreate() {
         // Initialise RecyclerView variable with corresponding element ID and set layout manager
-
         recyclerView = findViewById(R.id.listOfBooksRecyclerView);
         layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
         recyclerView.setLayoutManager(layoutManager);
@@ -420,12 +421,5 @@ public class MainActivity extends AppCompatActivity {
         bookViewModel.getListOfBooks().observe(this, (books -> {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
-
-        // Create new BookListFragment object
-        BookListFragment bookListFragment = new BookListFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment())
-                .commit();
     }
 }

@@ -28,4 +28,10 @@ public class BookRepository {
             bookDao.addBook(book);
         });
     }
+
+    public void deleteAllBooksRepository() {
+        BookDatabase.databaseWriteExecutor.execute(() -> {
+            bookDao.deleteAllBooks();
+        });
+    }
 }

@@ -63,12 +63,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView bookIdTV;
-        TextView bookTitleTV;
-        TextView bookIsbnTV;
-        TextView bookAuthorTV;
-        TextView bookDescriptionTV;
-        TextView bookPriceTV;
+        TextView bookIdTV
+                , bookTitleTV
+                , bookIsbnTV
+                , bookAuthorTV
+                , bookDescriptionTV
+                , bookPriceTV;
 
         /**
          * This method creates a ViewHolder object

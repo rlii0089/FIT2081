@@ -15,4 +15,7 @@ public interface BookDao {
 
     @Insert
     public void addBook(Book book);
+
+    @Query("DELETE FROM books")
+    public void deleteAllBooks();
 }
