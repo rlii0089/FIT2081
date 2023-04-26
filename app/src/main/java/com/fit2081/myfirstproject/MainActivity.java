@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar; // Toolbar to display app bar
     private BookViewModel bookViewModel; // View model to access database
 
-    BookListFragment bookListFragment = new BookListFragment();
-
     EditText bookIdEt
             , bookTitleEt
             , bookIsbnEt
@@ -91,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         String theBookPrice = bookPriceEt.getText().toString(); // Treating as String as no arithmetic operations are performed
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
-        database.add(item);
-        adapter.notifyDataSetChanged();
+        BookListFragment bookListFragment = new BookListFragment();
+        bookListFragment.addItem(item);
 
         saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
         String toastMessage = "Added: " + theBookTitle  + " ($" + theBookPrice + ")"; // String variable displayed in the toast using above variables

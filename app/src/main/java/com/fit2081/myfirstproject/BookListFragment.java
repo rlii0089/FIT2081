@@ -36,4 +36,10 @@ public class BookListFragment extends Fragment {
 
         return view;
     }
+
+    public void addItem(Item item) {
+        // Add item to ArrayList and notify adapter of change
+        database.add(item);
+        adapter.notifyDataSetChanged();
+    }
 }
