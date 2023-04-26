@@ -13,25 +13,19 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 public class BookListFragment extends Fragment {
-    private ArrayList<Item> database;
     private RecyclerView recyclerView;
-    private Adapter adapter;
     private LinearLayoutManager layoutManager;
+    private Adapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
 
-        // Initialise RecyclerView variable with corresponding element ID and set layout manager
-
         recyclerView = view.findViewById(R.id.listOfBooksRecyclerView);
         layoutManager = new LinearLayoutManager(getContext()); // Created to provide similar functionality to ListView
         recyclerView.setLayoutManager(layoutManager);
 
-        // Initialise ArrayList and Adapter variables and set data to ArrayList and adapter
-        database = new ArrayList<>();
         adapter = new Adapter();
-        adapter.setData(database);
         recyclerView.setAdapter(adapter);
 
         return view;

@@ -421,5 +421,7 @@ public class MainActivity extends AppCompatActivity {
         bookViewModel.getListOfBooks().observe(this, (books -> {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.bookListFragmentFrameLayout, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
     }
 }

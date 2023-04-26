@@ -153,14 +153,15 @@
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listOfBooksRecyclerView"
+    <FrameLayout
+        android:id="@+id/bookListFragmentFrameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_bottom_button"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
-        app:layout_constraintTop_toBottomOf="@+id/doublePriceButton" />
+        app:layout_constraintTop_toBottomOf="@+id/doublePriceButton">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
