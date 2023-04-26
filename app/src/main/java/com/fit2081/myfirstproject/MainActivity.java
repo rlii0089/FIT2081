@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-        Week6OnCreate();
+//        Week6OnCreate();
         Week7OnCreate();
     }
 
@@ -423,5 +423,10 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         getSupportFragmentManager().beginTransaction().replace(R.id.bookListFragmentFrameLayout, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
+
+        database = new ArrayList<>();
+        adapter = new Adapter();
+        adapter.setData(database);
+
     }
 }
