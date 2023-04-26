@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar; // Toolbar to display app bar
     private BookViewModel bookViewModel; // View model to access database
 
+    BookListFragment bookListFragment = new BookListFragment();
+
     EditText bookIdEt
             , bookTitleEt
             , bookIsbnEt
@@ -71,19 +73,8 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-        Week6OnCreate();
-
-        bookViewModel = new ViewModelProvider(this).get(BookViewModel.class); // Initialise ViewModelProvider that will be used to access database across multiple fragments
-
-        // Observe changes in the list of books in the database
-        bookViewModel.getListOfBooks().observe(this, (books -> {
-            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
-        }));
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment())
-                .commit();
+//        Week6OnCreate();
+        Week7OnCreate();
     }
 
     /**
@@ -409,6 +400,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void Week6OnCreate() {
         // Initialise RecyclerView variable with corresponding element ID and set layout manager
+
         recyclerView = findViewById(R.id.listOfBooksRecyclerView);
         layoutManager = new LinearLayoutManager(this); // Created to provide similar functionality to ListView
         recyclerView.setLayoutManager(layoutManager);
@@ -418,5 +410,22 @@ public class MainActivity extends AppCompatActivity {
         adapter = new Adapter();
         adapter.setData(database);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void Week7OnCreate() {
+        // Initialise ViewModelProvider that will be used to access database across multiple fragments
+        bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
+
+        // Observe changes in the list of books in the database
+        bookViewModel.getListOfBooks().observe(this, (books -> {
+            Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
+        }));
+
+        // Create new BookListFragment object
+        BookListFragment bookListFragment = new BookListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainerFrameLayout_id, new BookListFragment())
+                .commit();
     }
 }
