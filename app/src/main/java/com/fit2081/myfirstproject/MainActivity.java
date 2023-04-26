@@ -422,11 +422,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.bookListFragmentFrameLayout, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
-
         database = new ArrayList<>();
         adapter = new Adapter();
         adapter.setData(database);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.bookListFragmentFrameLayout, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
 
     }
 }
