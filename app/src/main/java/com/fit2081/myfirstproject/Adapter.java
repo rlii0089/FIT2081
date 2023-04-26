@@ -51,7 +51,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      */
     @Override
     public int getItemCount() {
-        return database.size();
+        if (database == null) {
+            return 0;
+        } else {
+            return database.size();
+        }
     }
 
     /**
