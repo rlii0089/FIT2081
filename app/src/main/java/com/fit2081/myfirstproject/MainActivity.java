@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
         database.add(item);
+        adapter.setData(database);
         adapter.notifyDataSetChanged();
 
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);

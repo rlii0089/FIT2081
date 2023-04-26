@@ -64,6 +64,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      */
     public void setData(ArrayList<Item> database) {
         this.database = database;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
