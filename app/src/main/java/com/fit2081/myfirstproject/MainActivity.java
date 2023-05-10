@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             , bookDescriptionEt
             , bookPriceEt
             , bookCopiesSoldEt; // Extra task in week 3 lab
-    View gestureView; // View to detect gestures
 
     // Keys used for key-value pairs in save/restore instance state methods
     public static final String BOOK_ID_KEY = "BOOK_ID"
@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private BookViewModel bookViewModel; // View model to access database
 //    DatabaseReference cloudDatabase; // Firebase database reference
 //    DatabaseReference bookBranch; // Firebase database reference
+    View gestureView; // View to detect gestures
+    int startingX, startingY, endingX, endingY; // Variables to store coordinates of starting and ending points of gesture
 
     /**
      * Method to handle create activity
@@ -442,6 +444,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void Week9OnCreate() {
         gestureView = findViewById(R.id.gestureView); // Initialise GestureOverlayView variable with corresponding element ID
+        gestureView.setOnTouchListener(new View.OnTouchListener() {
+            // Set on touch listener to gesture view
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked(); // Get action from MotionEvent
+
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Initialise starting coordinates
+                        startingX = (int) event.getX();
+                        startingY = (int) event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP: // If action is up, get ending coordinates and check if gesture is left, right or up
+                        // Initialise ending coordinates
+                        endingX = (int) event.getX();
+                        endingY = (int) event.getY();
+
+                        if (startingX > endingX) { // If gesture is left, call onClearButtonClick method
+                            onAddBookButtonClick(null);
+                        } else if (startingX < endingX) { // If gesture is right, increment book price by 1
+                            int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
+                            bookPriceEt.setText(String.valueOf(currentInputtedPrice + 1));
+                        } else if (startingY > endingY) { // If gesture is up, call onClearButtonClick method
+                            onClearButtonClick(null);
+                        }
+                        break;
+                }
+                return true; // Return true to indicate that the listener has consumed the event
+            }
+        });
 
     }
 }
