@@ -9,6 +9,9 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This class is used to create a database holder.
+ */
 @Database(entities = {Book.class}, version = 1) // This database contains a table called "books" and the version is 1
 public abstract class BookDatabase extends RoomDatabase { // Made abstract because we don't want to create an instance of this class
 

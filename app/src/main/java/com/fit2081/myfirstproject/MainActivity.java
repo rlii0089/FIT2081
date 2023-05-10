@@ -1,16 +1,5 @@
 package com.fit2081.myfirstproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.myfirstproject.provider.Book;
 import com.fit2081.myfirstproject.provider.BookViewModel;
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             , bookDescriptionEt
             , bookPriceEt
             , bookCopiesSoldEt; // Extra task in week 3 lab
+    View gestureView; // View to detect gestures
 
     // Keys used for key-value pairs in save/restore instance state methods
     public static final String BOOK_ID_KEY = "BOOK_ID"
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView; // Navigation view to display navigation drawer
     Toolbar toolbar; // Toolbar to display app bar
     private BookViewModel bookViewModel; // View model to access database
+//    DatabaseReference cloudDatabase; // Firebase database reference
+//    DatabaseReference bookBranch; // Firebase database reference
 
     /**
      * Method to handle create activity
@@ -70,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
         Week3OnCreate(savedInstanceState);
         Week4OnCreate();
         Week5OnCreate();
-//        Week6OnCreate();
+        Week6OnCreate();
         Week7OnCreate();
+        Week8OnCreate();
+        Week9OnCreate();
     }
 
     /**
@@ -88,12 +92,15 @@ public class MainActivity extends AppCompatActivity {
         String theBookPrice = bookPriceEt.getText().toString(); // Treating as String as no arithmetic operations are performed
         Item item = new Item(theBookId, theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
 
+        // Add item to database and notify adapter of change to display new item
         database.add(item);
-        adapter.setData(database);
         adapter.notifyDataSetChanged();
 
+        // Add book to database using ViewModelProvider
         Book book = new Book(theBookTitle, theBookIsbn, theBookAuthor, theBookDescription, theBookPrice);
-        bookViewModel.addBookViewModel(book); // Add book to database using ViewModelProvider
+        bookViewModel.addBookViewModel(book);
+
+//        bookBranch.push().setValue(book); // Add book to Firebase database
 
         saveSharedPreferences(); // call saveSharedPreferences method to save current EditText values
 
@@ -422,12 +429,19 @@ public class MainActivity extends AppCompatActivity {
         bookViewModel.getListOfBooks().observe(this, (books -> {
             Toast.makeText(getApplicationContext(), books.size() + " books", Toast.LENGTH_SHORT).show();
         }));
+    }
 
-        database = new ArrayList<>();
-        adapter = new Adapter();
-        adapter.setData(database);
+    public void Week8OnCreate() {
+//        FirebaseApp.initializeApp(this); // Initialise Firebase app
+//        cloudDatabase = FirebaseDatabase.getInstance().getReference(); // Initialise cloud database reference
+//        bookBranch = cloudDatabase.child("books"); // Initialise book branch reference
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.bookListFragmentFrameLayout, new BookListFragment()).commit(); // Replace fragment container with AddBookFragment
+        // Content Resolver file: BookLib2 Content Resolver
+        // Firebase made using personal email
+    }
+
+    public void Week9OnCreate() {
+        gestureView = findViewById(R.id.gestureView); // Initialise GestureOverlayView variable with corresponding element ID
 
     }
 }

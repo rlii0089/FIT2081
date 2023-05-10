@@ -7,18 +7,11 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical_guideline_left_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.2" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_guideline_right_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline_top_editText"
@@ -28,7 +21,7 @@
         app:layout_constraintGuide_percent="0.075" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_guideline_bottom_button"
+        android:id="@+id/horizontal_guideline_bottom_button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -56,7 +49,7 @@
         android:hint="@string/book_id_hint"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_top_editText" />
 
     <EditText
@@ -67,7 +60,7 @@
         android:hint="@string/book_title_hint"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookID_id" />
 
     <EditText
@@ -78,7 +71,7 @@
         android:hint="@string/book_isbn_hint"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookTitle_id" />
 
     <EditText
@@ -89,7 +82,7 @@
         android:hint="@string/book_author_hint"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookIsbn_id" />
 
     <EditText
@@ -100,7 +93,7 @@
         android:hint="@string/book_description_hint"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookAuthor_id" />
 
     <EditText
@@ -111,7 +104,7 @@
         android:hint="@string/book_price_hint"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookDescription_id" />
 
     <EditText
@@ -122,8 +115,17 @@
         android:hint="@string/copies_sold_hint"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_editText"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookPrice_id" />
+
+    <Button
+        android:id="@+id/loadLastBookButton"
+        android:layout_width="96dp"
+        android:layout_height="72dp"
+        android:onClick="onLoadLastBookButtonClick"
+        android:text="@string/load_last_book_text"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
+        app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
     <Button
         android:id="@+id/doublePriceButton"
@@ -144,24 +146,23 @@
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
         app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
 
-    <Button
-        android:id="@+id/loadLastBookButton"
-        android:layout_width="96dp"
-        android:layout_height="72dp"
-        android:onClick="onLoadLastBookButtonClick"
-        android:text="@string/load_last_book_text"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
-        app:layout_constraintTop_toBottomOf="@+id/bookCopiesSold_id" />
-
-    <FrameLayout
-        android:id="@+id/bookListFragmentFrameLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listOfBooksRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_bottom_button"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_bottom_button2"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
-        app:layout_constraintTop_toBottomOf="@+id/doublePriceButton">
+        app:layout_constraintTop_toBottomOf="@+id/doublePriceButton" />
 
-    </FrameLayout>
+    <View
+        android:id="@+id/gestureView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#1DD4B8"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_right_editText"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_top_editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

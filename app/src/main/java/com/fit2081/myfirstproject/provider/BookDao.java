@@ -7,11 +7,14 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * This interface is used to define the database operations that can be performed on the Book table
+ */
 @Dao
 public interface BookDao {
 
     @Query("SELECT * FROM books")
-    public LiveData<List<Book>> getAllBooks();
+    public LiveData<List<Book>> getAllBooks(); // LiveData is a wrapper class that can be used to observe changes in the data
 
     @Insert
     public void addBook(Book book);

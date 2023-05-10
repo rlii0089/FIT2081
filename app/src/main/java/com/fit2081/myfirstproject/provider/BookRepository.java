@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+
 public class BookRepository {
 
     private BookDao bookDao;
@@ -18,10 +19,18 @@ public class BookRepository {
         listOfBooks = bookDao.getAllBooks();
     }
 
+    /**
+     * This method is used to get the list of books from the database
+     * @return the list of books
+     */
     public LiveData<List<Book>> getListOfBooks() {
         return listOfBooks;
     }
 
+    /**
+     * This method is used to add a book to the database
+     * @param book the book to be added
+     */
     public void addBookRepository(Book book) {
         // This is a lambda expression that schedules the execution of the code inside the run() method on a background thread
         BookDatabase.databaseWriteExecutor.execute(() -> {
@@ -29,6 +38,9 @@ public class BookRepository {
         });
     }
 
+    /**
+     * This method is used to delete all books from the database
+     */
     public void deleteAllBooksRepository() {
         BookDatabase.databaseWriteExecutor.execute(() -> {
             bookDao.deleteAllBooks();

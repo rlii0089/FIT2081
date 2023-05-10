@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * This class is used to define the Book table in the database
+ */
 @Entity(tableName = "books")
 public class Book {
     @PrimaryKey(autoGenerate = true)

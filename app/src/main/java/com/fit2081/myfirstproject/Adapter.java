@@ -51,11 +51,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      */
     @Override
     public int getItemCount() {
-        if (database == null) {
-            return 0;
-        } else {
-            return database.size();
-        }
+        return database.size();
     }
 
     /**
@@ -64,7 +60,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      */
     public void setData(ArrayList<Item> database) {
         this.database = database;
-        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

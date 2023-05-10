@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
+
     <!-- Permissions -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
+
+    <!-- Custom permissions -->
+    <permission
+        android:name="fit2081.READ_PERMISSION"
+        android:protectionLevel="normal" />
+    <permission android:name="fit2081.WRITE_PERMISSION"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +24,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFirstProject"
         tools:targetApi="31" >
+
+        <!-- Content provider -->
+        <provider
+            android:name=".provider.BookContentProvider"
+            android:readPermission="fit2081.READ_PERMISSION"
+            android:writePermission="fit2081.WRITE_PERMISSION"
+            android:authorities="fit2081.app.raymond"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
+
         <!-- Register the SMSReceiver class as a receiver for SMS messages -->
         <receiver
             android:name=".SMSReceiver"
