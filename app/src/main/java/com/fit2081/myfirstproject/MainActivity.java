@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 //    DatabaseReference cloudDatabase; // Firebase database reference
 //    DatabaseReference bookBranch; // Firebase database reference
     View gestureView; // View to detect gestures
-    int startingX, startingY, endingX, endingY; // Variables to store coordinates of starting and ending points of gesture
+    int startingX, startingY, movedX, movedY, endingX, endingY; // Variables to store coordinates of starting, moved and endpoints of x and y coordinates
+    int moveDistance = 50;
 
     /**
      * Method to handle create activity
@@ -456,6 +457,15 @@ public class MainActivity extends AppCompatActivity {
                         startingX = (int) event.getX();
                         startingY = (int) event.getY();
                         break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        movedX = (int) event.getX();
+//                        movedY = (int) event.getY();
+//
+//                        if (movedX > startingX + moveDistance) { // If gesture is right, increment book price by 1
+//                        int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
+//                        bookPriceEt.setText(String.valueOf(currentInputtedPrice + 1));
+//                        }
+
                     case MotionEvent.ACTION_UP: // If action is up, get ending coordinates and check if gesture is left, right or up
                         // Initialise ending coordinates
                         endingX = (int) event.getX();
@@ -463,9 +473,6 @@ public class MainActivity extends AppCompatActivity {
 
                         if (startingX > endingX) { // If gesture is left, call onClearButtonClick method
                             onAddBookButtonClick(null);
-                        } else if (startingX < endingX) { // If gesture is right, increment book price by 1
-                            int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
-                            bookPriceEt.setText(String.valueOf(currentInputtedPrice + 1));
                         } else if (startingY > endingY) { // If gesture is up, call onClearButtonClick method
                             onClearButtonClick(null);
                         }

@@ -12,7 +12,7 @@
 
     <!-- Button Texts -->
     <string name="clear_button_text">Clear</string>
-    <string name="load_last_book_text">Load Last Book</string>
+    <string name="load_last_book_text">Load Last</string>
     <string name="double_price_button_text">Double Price</string>
     <string name="add_book_button_text">Add Book</string>
 

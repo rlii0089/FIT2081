@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.333" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline_top_editText"
@@ -118,6 +118,16 @@
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/bookPrice_id" />
 
+    <View
+        android:id="@+id/gestureView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#1DD4B8"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_right_editText"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_top_editText" />
+
     <Button
         android:id="@+id/loadLastBookButton"
         android:layout_width="96dp"
@@ -154,15 +164,5 @@
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
         app:layout_constraintStart_toStartOf="@+id/vertical_guideline_left_button"
         app:layout_constraintTop_toBottomOf="@+id/doublePriceButton" />
-
-    <View
-        android:id="@+id/gestureView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#1DD4B8"
-        app:layout_constraintBottom_toTopOf="@+id/clearButton"
-        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline_right_button"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline_right_editText"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_top_editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
