@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //    DatabaseReference bookBranch; // Firebase database reference
     View gestureView; // View to detect gestures
     int startingX, startingY, movedX, movedY, endingX, endingY; // Variables to store coordinates of starting, moved and endpoints of x and y coordinates
-    int moveDistance = 50;
+    GestureDetector gestureDetector; // Gesture detector to detect gestures
 
     /**
      * Method to handle create activity
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         Week6OnCreate();
         Week7OnCreate();
         Week8OnCreate();
-        Week9OnCreate();
+//        Week9OnCreate();
+        Week10OnCreate();
     }
 
     /**
@@ -450,6 +452,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked(); // Get action from MotionEvent
+                int moveDistance = 75;
 
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
@@ -457,23 +460,29 @@ public class MainActivity extends AppCompatActivity {
                         startingX = (int) event.getX();
                         startingY = (int) event.getY();
                         break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        movedX = (int) event.getX();
-//                        movedY = (int) event.getY();
-//
-//                        if (movedX > startingX + moveDistance) { // If gesture is right, increment book price by 1
-//                        int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
-//                        bookPriceEt.setText(String.valueOf(currentInputtedPrice + 1));
-//                        }
+                    case MotionEvent.ACTION_MOVE:
+                        movedX = (int) event.getX();
+                        movedY = (int) event.getY();
+
+                        if (movedX > startingX && movedX - startingX > moveDistance && startingY == movedY) { // If gesture is right, increment book price by 1
+                            int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
+                            bookPriceEt.setText(String.valueOf(currentInputtedPrice + 1));
+                        } else if (
+                                ((movedX > startingX && movedX - startingX > moveDistance) && (movedY > startingY + moveDistance && movedY - startingY > moveDistance))
+                        ) {
+                            database.clear();
+                            adapter.notifyDataSetChanged();
+                            bookViewModel.deleteAllBooksViewModel();
+                        }
 
                     case MotionEvent.ACTION_UP: // If action is up, get ending coordinates and check if gesture is left, right or up
                         // Initialise ending coordinates
                         endingX = (int) event.getX();
                         endingY = (int) event.getY();
 
-                        if (startingX > endingX) { // If gesture is left, call onClearButtonClick method
+                        if (startingX > endingX && startingY == endingY) { // If gesture is left, call onClearButtonClick method
                             onAddBookButtonClick(null);
-                        } else if (startingY > endingY) { // If gesture is up, call onClearButtonClick method
+                        } else if (startingY > endingY && startingX == endingX) { // If gesture is up, call onClearButtonClick method
                             onClearButtonClick(null);
                         }
                         break;
@@ -482,5 +491,63 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void Week10OnCreate() {
+        gestureView = findViewById(R.id.gestureView); // Initialise GestureOverlayView variable with corresponding element ID
+        gestureDetector = new GestureDetector(this, new GestureHandler()); // Initialise GestureDetector variable with custom class GestureHandler
+        gestureView.setOnTouchListener(new View.OnTouchListener() {
+            // Set on touch listener to gesture view
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event); // Pass event to gesture detector
+                return true; // Return true to indicate that the listener has consumed the event
+            }
+        });
+    }
+
+    private class GestureHandler extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(@NonNull MotionEvent motionEvent) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
+            bookIsbnEt.setText(RandomString.generateNewRandomString(6)); // Set book ISBN to random string
+            return super.onSingleTapConfirmed(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(@NonNull MotionEvent e) {
+            onClearButtonClick(null);
+            return super.onDoubleTap(e);
+        }
+
+        @Override
+        public boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) { // If scrolling from right to left, increment the price by the amount of distance scrolled, else if the scrolling is left to right, decrement the price by the amount of distance scrolled
+            if (e1.getX() > e2.getX()) { // If scrolling from right to left, increment the price by the amount of distance scrolled
+                int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
+                bookPriceEt.setText(String.valueOf(currentInputtedPrice + (int) distanceX));
+            } else if (e1.getX() < e2.getX()) { // If scrolling from left to right, decrement the price by the amount of distance scrolled
+                int currentInputtedPrice = Integer.parseInt(bookPriceEt.getText().toString());
+                bookPriceEt.setText(String.valueOf(currentInputtedPrice + (int) distanceX)); // Adding the distance because X is negative
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+
+        @Override
+        public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+            if (velocityX > 1000) {
+                moveTaskToBack(true);
+            }
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+
+        @Override
+        public void onLongPress(@NonNull MotionEvent e) {
+            onLoadLastBookButtonClick(null);
+            super.onLongPress(e);
+        }
     }
 }
